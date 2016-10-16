@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        imageBitmap.compress(Bitmap.CompressFormat.PNG/*JPEG*/, 100, outputStream);
+        imageBitmap.compress(Bitmap.CompressFormat./*PNG*/JPEG, 100, outputStream);
         ByteArrayInputStream inputStream =
                 new ByteArrayInputStream(outputStream.toByteArray());
         AsyncTask<InputStream, String, Face[]> detectTask =
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                             bmp = Bitmap.createScaledBitmap(bmp, bmp.getWidth(), bmp.getHeight(), false);
                             System.out.println("bytecount of this bitmap" + bmp.getByteCount());
                             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                            bmp.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+                            bmp.compress(Bitmap.CompressFormat.JPEG/*PNG*/, 0 /*ignored for PNG*/, bos);
                             byte[] bitmapdata = bos.toByteArray();
                             ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
 
