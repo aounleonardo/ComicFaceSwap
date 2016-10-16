@@ -4,13 +4,13 @@
 		{
 			"name": "thor.png",
 			"emotions": {
-		      "anger": 0.435050726,
-		      "contempt": 0.0231719986,
-		      "disgust": 0.0005916979,
+		      "anger": 0.235050726,
+		      "contempt": 0.3231719986,
+		      "disgust": 0.2005916979,
 		      "fear": 0.0001122817,
-		      "happiness": 1.16279836e-7,
+		      "happiness": 0.36279836,
 		      "neutral": 0.5398197,
-		      "sadness": 0.000329837436,
+		      "sadness": 0.400329837436,
 		      "surprise": 0.0009236221
 			},
 			"other": {
@@ -26,12 +26,12 @@
 		{
 			"name": "spiderman.png",
 			"emotions": {
-		      "anger": 0.800000 ,
+		      "anger": 0.100000 ,
 		      "contempt": 0.02000000,
 		      "disgust": 0.0004,
 		      "fear": 0.0001122817,
 		      "happiness": 0.000001080,
-		      "neutral": 0.22,
+		      "neutral": 0.9,
 		      "sadness": 0.000004,
 		      "surprise": 0.0877
 			},
@@ -48,14 +48,14 @@
 		{
 			"name": "black_widow.png",
 			"emotions": {
-			      "anger": 0.0154285161,
-			      "contempt": 0.00122393388,
-			      "disgust": 0.00000758274655,
-			      "fear": 0.00004491894,
-			      "happiness": 0.0000121367621,
+			      "anger": 0.1154285161,
+			      "contempt": 0.50122393388,
+			      "disgust": 0.10000758274655,
+			      "fear": 0.10004491894,
+			      "happiness": 0.1000121367621,
 			      "neutral": 0.9828806,
-			      "sadness": 0.000144268241,
-			      "surprise": 0.000258044834
+			      "sadness": 0.100144268241,
+			      "surprise": 0.100258044834
 			},
 			"other": {
 	     		"age": 26.7,
@@ -72,10 +72,10 @@
 			"emotions": {
 				"anger": 0.8,
 		      	"contempt": 0.2,
-		      	"disgust": 0.4,
+		      	"disgust": 0.6,
 		      	"fear": 0.0,
 		      	"happiness": 0.0,
-			    "neutral": 0.0,
+			    "neutral": 0.5,
 			    "sadness": 0.0,
 				"surprise": 0.0
 			},
@@ -95,10 +95,10 @@
 				"anger": 1.0,
 		      	"contempt": 0,
 		      	"disgust": 0,
-		      	"fear": 0,
+		      	"fear": 0.3,
 		      	"happiness": 0,
 			    "neutral": 0,
-			    "sadness": 0,
+			    "sadness": 0.5,
 				"surprise": 0
 			},
 			"other": {
@@ -119,8 +119,8 @@
 		      	"disgust": 0.0,
 		      	"fear": 0.0,
 		      	"happiness": 0.0,
-			    "neutral": 0.2,
-			    "sadness": 0.0,
+			    "neutral": 0.5,
+			    "sadness": 0.9,
 				"surprise": 0.0
 			},
 			"other": {
@@ -140,7 +140,7 @@
 		      	"contempt": 0.0,
 		      	"disgust": 0.0,
 		      	"fear": 0.0,
-		      	"happiness": 0.0,
+		      	"happiness": 0.7,
 			    "neutral": 0.0,
 			    "sadness": 0.0,
 				"surprise": 0.8
@@ -158,14 +158,14 @@
 		{
 			"name": "ghost_rider.png",
 			"emotions": {
-				"anger": 0.8,
-		      	"contempt": 0.5,
+				"anger": 0.9,
+		      	"contempt": 0.0,
 		      	"disgust": 0,
-		      	"fear": 0,
-		      	"happiness": 0,
+		      	"fear": 0.0,
+		      	"happiness": 0.0,
 			    "neutral": 0,
-			    "sadness": 0,
-				"surprise": 0.2
+			    "sadness": 0.5,
+				"surprise": 0.0
 			},
 			"other": {
 				"age": 30.0,
@@ -180,13 +180,13 @@
 		{
 			"name": "poison_ivy.png",
 			"emotions": {
-				"anger": 0,
-		      	"contempt": 0.4,
+				"anger": 0.9,
+		      	"contempt": 0.0,
 		      	"disgust": 0,
 		      	"fear": 0,
-		      	"happiness": 0.8,
-			    "neutral": 0.5,
-			    "sadness": 0,
+		      	"happiness": 0.0,
+			    "neutral": 0.0,
+			    "sadness": 0.5,
 				"surprise": 0
 			},
 			"other": {
@@ -206,10 +206,10 @@
 		      	"contempt": 0,
 		      	"disgust": 0,
 		      	"fear": 0,
-		      	"happiness": 1.0,
+		      	"happiness": 0.5,
 			    "neutral": 0,
 			    "sadness": 0,
-				"surprise": 0.5
+				"surprise": 0.9
 			},
 			"other": {
 				"age": 27.0,

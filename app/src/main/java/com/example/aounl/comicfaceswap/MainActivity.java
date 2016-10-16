@@ -305,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
                 float originalComicFaceWidth = originalComicFace.getWidth();
                 float originalComicFaceHeight = originalComicFace.getHeight();
                 float widthFactor = faceWidth/originalComicFaceWidth;
-                float comicFaceMult = 1.5f;
+                float comicFaceMult = 1.75f;
                 int comicWidth = (int)(originalComicFaceWidth*comicFaceMult*widthFactor);
                 int comicHeight = (int)(originalComicFaceHeight*comicFaceMult*widthFactor);
                 Bitmap comicFace = Bitmap.createScaledBitmap(originalComicFace, comicWidth, comicHeight, false);
@@ -374,16 +374,16 @@ public class MainActivity extends AppCompatActivity {
                 cost = 100.f;
             } else{
 
-        cost += Math.abs(emotions.anger - (double)comicChar.getJSONObject("emotions").get("anger"));
-        cost += Math.abs(emotions.contempt - (double)comicChar.getJSONObject("emotions").get("contempt"));
-        cost += Math.abs(emotions.disgust - (double)comicChar.getJSONObject("emotions").get("disgust"));
-        cost += Math.abs(emotions.fear - (double)comicChar.getJSONObject("emotions").get("fear"));
-        cost += Math.abs(emotions.happiness - (double)comicChar.getJSONObject("emotions").get("happiness"));
-        cost += Math.abs(emotions.neutral - (double)comicChar.getJSONObject("emotions").get("neutral"));
-        cost += Math.abs(emotions.sadness - (double)comicChar.getJSONObject("emotions").get("sadness"));
-        cost += Math.abs(emotions.surprise - (double)comicChar.getJSONObject("emotions").get("surprise"));
+        cost += Math.pow(Math.abs(emotions.anger - (double)comicChar.getJSONObject("emotions").get("anger")), 2);
+        cost += Math.pow(Math.abs(emotions.contempt - (double)comicChar.getJSONObject("emotions").get("contempt")), 2);
+        cost += Math.pow(Math.abs(emotions.disgust - (double)comicChar.getJSONObject("emotions").get("disgust")), 2);
+        cost += Math.pow(Math.abs(emotions.fear - (double)comicChar.getJSONObject("emotions").get("fear")), 2);
+        cost += Math.pow(Math.abs(emotions.happiness - (double)comicChar.getJSONObject("emotions").get("happiness")), 2);
+        cost += Math.pow(Math.abs(emotions.neutral - (double)comicChar.getJSONObject("emotions").get("neutral")), 2);
+        cost += Math.pow(Math.abs(emotions.sadness - (double)comicChar.getJSONObject("emotions").get("sadness")), 2);
+        cost += Math.pow(Math.abs(emotions.surprise - (double)comicChar.getJSONObject("emotions").get("surprise")), 2);
 
-        cost += Math.abs(age - (double)comicChar.getJSONObject("other").get("age"))/50.f;
+        cost += Math.pow(Math.abs(age - (double)comicChar.getJSONObject("other").get("age"))/50.f, 2);
         }
         }catch(Exception e){
             System.out.println("qwertyuio" + e.getMessage());
