@@ -24,6 +24,28 @@
 			}
 		},
 		{
+			"name": "spiderman.png",
+			"emotions": {
+		      "anger": 0.800000 ,
+		      "contempt": 0.02000000,
+		      "disgust": 0.0004,
+		      "fear": 0.0001122817,
+		      "happiness": 0.000001080,
+		      "neutral": 0.22,
+		      "sadness": 0.000004,
+		      "surprise": 0.0877
+			},
+			"other": {
+				"age": 27,
+	      		"gender": "male",
+			    "headPose": {
+			        "roll": 1.9,
+			        "yaw": 20,
+			        "pitch": 0
+			    }
+			}
+		},
+		{
 			"name": "black_widow.png",
 			"emotions": {
 			      "anger": 0.0154285161,
@@ -71,13 +93,13 @@
 			"name": "hulk.png",
 			"emotions": {
 				"anger": 1.0,
-		      	"contempt": 0.0,
-		      	"disgust": 0.0,
-		      	"fear": 0.0,
-		      	"happiness": 0.0,
-			    "neutral": 0.0,
-			    "sadness": 0.0,
-				"surprise": 0.0
+		      	"contempt": 0,
+		      	"disgust": 0,
+		      	"fear": 0,
+		      	"happiness": 0,
+			    "neutral": 0,
+			    "sadness": 0,
+				"surprise": 0
 			},
 			"other": {
 				"age": 35.0,
@@ -88,6 +110,116 @@
 			        "pitch": 0
 			    }
 			}
+		},
+		{
+			"name": "magneto.png",
+			"emotions": {
+				"anger": 0.0,
+		      	"contempt": 0.8,
+		      	"disgust": 0.0,
+		      	"fear": 0.0,
+		      	"happiness": 0.0,
+			    "neutral": 0.2,
+			    "sadness": 0.0,
+				"surprise": 0.0
+			},
+			"other": {
+				"age": 65.0,
+			    "gender": "male",
+			    "headPose": {
+			        "roll": 0,
+			        "yaw": 0,
+			        "pitch": 0
+			    }
+			}
+		},
+		{
+			"name": "deadpool.png",
+			"emotions": {
+				"anger": 0.2,
+		      	"contempt": 0.0,
+		      	"disgust": 0.0,
+		      	"fear": 0.0,
+		      	"happiness": 0.0,
+			    "neutral": 0.0,
+			    "sadness": 0.0,
+				"surprise": 0.8
+			},
+			"other": {
+				"age": 25.0,
+			    "gender": "male",
+			    "headPose": {
+			        "roll": 0,
+			        "yaw": 0,
+			        "pitch": 0
+			    }
+			}
+		},
+		{
+			"name": "ghost_rider.png",
+			"emotions": {
+				"anger": 0.8,
+		      	"contempt": 0.5,
+		      	"disgust": 0,
+		      	"fear": 0,
+		      	"happiness": 0,
+			    "neutral": 0,
+			    "sadness": 0,
+				"surprise": 0.2
+			},
+			"other": {
+				"age": 30.0,
+			    "gender": "male",
+			    "headPose": {
+			        "roll": 0,
+			        "yaw": 0,
+			        "pitch": 0
+			    }
+			}
+		},
+		{
+			"name": "poison_ivy.png",
+			"emotions": {
+				"anger": 0,
+		      	"contempt": 0.4,
+		      	"disgust": 0,
+		      	"fear": 0,
+		      	"happiness": 0.8,
+			    "neutral": 0.5,
+			    "sadness": 0,
+				"surprise": 0
+			},
+			"other": {
+				"age": 28.0,
+			    "gender": "female",
+			    "headPose": {
+			        "roll": 0,
+			        "yaw": 0,
+			        "pitch": 0
+			    }
+			}
+		},
+		{
+			"name": "harley.png",
+			"emotions": {
+				"anger": 0,
+		      	"contempt": 0,
+		      	"disgust": 0,
+		      	"fear": 0,
+		      	"happiness": 1.0,
+			    "neutral": 0,
+			    "sadness": 0,
+				"surprise": 0.5
+			},
+			"other": {
+				"age": 27.0,
+			    "gender": "female",
+			    "headPose": {
+			        "roll": 0,
+			        "yaw": 0,
+			        "pitch": 0
+			    }
+			}
 		}
-	]
+	]	
 }

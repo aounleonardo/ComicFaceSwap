@@ -1,6 +1,7 @@
 package com.example.aounl.comicfaceswap;
 
 import android.content.res.AssetManager;
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -37,7 +38,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
-
     private final int PICK_IMAGE = 1;
     private ProgressDialog detectionProgressDialog;
     private FaceServiceClient faceServiceClient = new FaceServiceRestClient("0ca0c2e7070f4e85864dbc2ba18c8699");
@@ -100,34 +100,49 @@ public class MainActivity extends AppCompatActivity {
             Uri uri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+
+                /*ExifInterface ei = new ExifInterface(uri.getPath());
+                int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                        ExifInterface.ORIENTATION_UNDEFINED);
+
+                switch(orientation) {
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        bitmap = rotateImage(bitmap, 90);
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_180:
+                        bitmap = rotateImage(bitmap, 180);
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                        bitmap = rotateImage(bitmap, 270);
+                        break;
+                    case ExifInterface.ORIENTATION_NORMAL:
+                    default:
+                        break;
+                }*/
+
+
+
+                bitmap = rotateImage(bitmap, 270);
+
                 if(bitmap.getHeight() > 4096 || bitmap.getWidth() > 4096){
                     int large = Math.max(bitmap.getHeight(), bitmap.getWidth());
                     float shrinkFactor = large/4096*1.f;
                     bitmap = Bitmap.createScaledBitmap(bitmap, (int)(bitmap.getWidth()/shrinkFactor),
                             (int)(bitmap.getHeight()/shrinkFactor), false);
                 }
+
+
+
                 ImageView imageView = (ImageView) findViewById(R.id.imageView1);
                 imageView.setImageBitmap(bitmap);
 
                 detectAndFrame(bitmap);
 
 
-//                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//                bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
-//                byte[] bitmapdata = bos.toByteArray();
-//                ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
-//
-//                try(InputStream input = bs){
-//                    System.out.println(" pre emotions ");
-//                    List<RecognizeResult> emotions = emotionServiceClient.recognizeImage(input);
-//                    System.out.println(" emotions " + emotions.size());
-//
-//                } catch(Exception e){
-//
-//                }
 
 
-            } catch (IOException e) {
+}
+                catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -375,6 +390,7 @@ public class MainActivity extends AppCompatActivity {
         }
         try{
             System.out.println(comicChar.getString("name") + "  costs   " + cost);
+            System.out.println(printScores(emotions));
         } catch (Exception e){}
         return cost;
     }
@@ -416,6 +432,13 @@ public class MainActivity extends AppCompatActivity {
         sb.append("---------------------------- \n");
 
         return sb.toString();
+    }
+
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix,
+                true);
     }
 
 }
