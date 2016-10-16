@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
                 comicLib = new JSONObject(theString);
                 JSONArray characters = (JSONArray) comicLib.get("results");
-                System.out.println(((JSONArray) comicLib.get("results")).getJSONObject(0).getJSONObject("emotions").getClass());
+//                System.out.println(((JSONArray) comicLib.get("results")).getJSONObject(0).getJSONObject("emotions").getClass());
 
             } catch(Exception e){
             }
@@ -122,14 +122,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                bitmap = rotateImage(bitmap, 270);
+                //bitmap = rotateImage(bitmap, 270);
 
-                if(bitmap.getHeight() > 4096 || bitmap.getWidth() > 4096){
+                /*if(bitmap.getHeight() > 4096 || bitmap.getWidth() > 4096){
                     int large = Math.max(bitmap.getHeight(), bitmap.getWidth());
                     float shrinkFactor = large/4096*1.f;
                     bitmap = Bitmap.createScaledBitmap(bitmap, (int)(bitmap.getWidth()/shrinkFactor),
                             (int)(bitmap.getHeight()/shrinkFactor), false);
-                }
+                }*/
 
 
 
@@ -180,14 +180,14 @@ public class MainActivity extends AppCompatActivity {
 // And please, unlike me, do something about the Exceptions :D
                             // ----------------------
 
-                            BufferedInputStream bufferedInputStream = new BufferedInputStream(params[0]);
-                            /*Bitmap */bmp = BitmapFactory.decodeStream(bufferedInputStream);
-                            bmp = Bitmap.createScaledBitmap(bmp, bmp.getWidth(), bmp.getHeight(), false);
-                            System.out.println("bytecount of this bitmap" + bmp.getByteCount());
-                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                            bmp.compress(Bitmap.CompressFormat.JPEG/*PNG*/, 0 /*ignored for PNG*/, bos);
-                            byte[] bitmapdata = bos.toByteArray();
-                            ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
+                            //BufferedInputStream bufferedInputStream = new BufferedInputStream(params[0]);
+                           // /*Bitmap */bmp = BitmapFactory.decodeStream(bufferedInputStream);
+                           // bmp = Bitmap.createScaledBitmap(bmp, bmp.getWidth(), bmp.getHeight(), false);
+                           // System.out.println("bytecount of this bitmap" + bmp.getByteCount());
+                          //  ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                          //  bmp.compress(Bitmap.CompressFormat.JPEG/*PNG*/, 0 /*ignored for PNG*/, bos);
+                          //  byte[] bitmapdata = bos.toByteArray();
+                           // ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
 
                             // ------------------------
 
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
                             byte[] buffer = new byte[1024];
                             int len;
                             /* change params 0 so that it reads from a very low def image */
-                            while ((len = /*params[0]*/bs.read(buffer)) > -1 ) {
+                            while ((len = params[0].read(buffer)) > -1 ) {
                                 baos.write(buffer, 0, len);
                             }
                             baos.flush();
@@ -215,8 +215,6 @@ public class MainActivity extends AppCompatActivity {
                                     attributes           // returnFaceAttributes: a string like "age, gender"
                             );
                             is1.close();
-
-
 
                                 InputStream input = is2;
                                 recos = emotionServiceClient.recognizeImage( input);
@@ -259,8 +257,8 @@ public class MainActivity extends AppCompatActivity {
                         if (result == null) return;
                         ImageView imageView = (ImageView)findViewById(R.id.imageView1);
 //                        imageView.setImageBitmap(drawFaceRectanglesOnBitmap(imageBitmap, result));
-                        imageView.setImageBitmap(drawFacesOnFaces(bmp/*imageBitmap*/, result, recos));
-                        /*imageBitmap*/bmp.recycle();
+                        imageView.setImageBitmap(drawFacesOnFaces(/*bmp*/imageBitmap, result, recos));
+                        imageBitmap/*bmp*/.recycle();
                     }
                 };
         detectTask.execute(inputStream);
@@ -281,7 +279,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static Bitmap drawFacesOnFaces(Bitmap originalBitmap, Face[] faces, List<RecognizeResult> recos){
         Bitmap bitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
-        System.out.println("bitmap height and length at drawfacesonfaces" + bitmap.getWidth() + bitmap.getHeight());
         Canvas canvas = new Canvas(bitmap);
         int nbOfFaces = recos.size();
         if(nbOfFaces > 0){
@@ -374,14 +371,14 @@ public class MainActivity extends AppCompatActivity {
                 cost = 100.f;
             } else{
 
-        cost += Math.pow(Math.abs(emotions.anger - (double)comicChar.getJSONObject("emotions").get("anger")), 2);
-        cost += Math.pow(Math.abs(emotions.contempt - (double)comicChar.getJSONObject("emotions").get("contempt")), 2);
-        cost += Math.pow(Math.abs(emotions.disgust - (double)comicChar.getJSONObject("emotions").get("disgust")), 2);
-        cost += Math.pow(Math.abs(emotions.fear - (double)comicChar.getJSONObject("emotions").get("fear")), 2);
-        cost += Math.pow(Math.abs(emotions.happiness - (double)comicChar.getJSONObject("emotions").get("happiness")), 2);
-        cost += Math.pow(Math.abs(emotions.neutral - (double)comicChar.getJSONObject("emotions").get("neutral")), 2);
-        cost += Math.pow(Math.abs(emotions.sadness - (double)comicChar.getJSONObject("emotions").get("sadness")), 2);
-        cost += Math.pow(Math.abs(emotions.surprise - (double)comicChar.getJSONObject("emotions").get("surprise")), 2);
+        cost += Math.pow(Math.abs(emotions.anger - (double)comicChar.getJSONObject("emotions").get("anger") *1.0), 2);
+        cost += Math.pow(Math.abs(emotions.contempt - (double)comicChar.getJSONObject("emotions").get("contempt")*1.0), 2);
+        cost += Math.pow(Math.abs(emotions.disgust - (double)comicChar.getJSONObject("emotions").get("disgust")*1.0), 2);
+        cost += Math.pow(Math.abs(emotions.fear - (double)comicChar.getJSONObject("emotions").get("fear")*1.0), 2);
+        cost += Math.pow(Math.abs(emotions.happiness - (double)comicChar.getJSONObject("emotions").get("happiness")*1.0), 2);
+        cost += Math.pow(Math.abs(emotions.neutral - (double)comicChar.getJSONObject("emotions").get("neutral")*1.0), 2);
+        cost += Math.pow(Math.abs(emotions.sadness - (double)comicChar.getJSONObject("emotions").get("sadness")*1.0), 2);
+        cost += Math.pow(Math.abs(emotions.surprise - (double)comicChar.getJSONObject("emotions").get("surprise")*1.0), 2);
 
         cost += Math.pow(Math.abs(age - (double)comicChar.getJSONObject("other").get("age"))/50.f, 2);
         }
@@ -390,7 +387,6 @@ public class MainActivity extends AppCompatActivity {
         }
         try{
             System.out.println(comicChar.getString("name") + "  costs   " + cost);
-            System.out.println(printScores(emotions));
         } catch (Exception e){}
         return cost;
     }
