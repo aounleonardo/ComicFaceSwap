@@ -182,7 +182,7 @@
 			"emotions": {
 				"anger": 0.9,
 		      	"contempt": 0.0,
-		      	"disgust": 0,
+		      	"disgust": 0.7,
 		      	"fear": 0.0,
 		      	"happiness": 0.0,
 			    "neutral": 0,
