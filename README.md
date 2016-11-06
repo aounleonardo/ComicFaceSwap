@@ -3,6 +3,8 @@
 Android application.
 Swaps each face in a photo with face of marvel character who is most similar, based on facial emotions and other metrics.
 
+Uses Microsoft Cognitive Service's Face and Emotion API.
+
 | Input        |   Output        |
 | ------------- |:-------------:|
 | ![received_1269195349797329](https://cloud.githubusercontent.com/assets/10877153/19562628/ddc50754-9691-11e6-82b6-328b5bcb9873.jpeg)     | ![screenshot_20161020-064332](https://cloud.githubusercontent.com/assets/10877153/19562590/c42861a6-9691-11e6-91ae-a2687250d8de.png) |
