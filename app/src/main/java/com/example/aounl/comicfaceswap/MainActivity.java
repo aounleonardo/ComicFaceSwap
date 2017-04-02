@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             try{
             files = assetManager.list("");
 
-            InputStream input = assetManager.open("comicFaces.json");
+            InputStream input = assetManager.open("marvel_villains.json");
             JsonReader comicReader = new JsonReader(new InputStreamReader(input));
                 StringWriter writer = new StringWriter();
                 IOUtils.copy(input, writer, "UTF-8");

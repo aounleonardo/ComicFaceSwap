@@ -1,0 +1,115 @@
+{
+	"results":
+	[
+		{
+			"name": "marvel_heroes/thor.png",
+			"emotions": {
+		      "anger": 0.235050726,
+		      "contempt": 0.3231719986,
+		      "disgust": 0.2005916979,
+		      "fear": 0.0001122817,
+		      "happiness": 0.36279836,
+		      "neutral": 0.5398197,
+		      "sadness": 0.400329837436,
+		      "surprise": 0.0009236221
+			},
+			"other": {
+				"age": 37.1,
+	      		"gender": "male",
+			    "headPose": {
+			        "roll": 1.9,
+			        "yaw": 20,
+			        "pitch": 0
+			    }
+			}
+		},
+		{
+			"name": "marvel_heroes/spiderman.png",
+			"emotions": {
+		      "anger": 0.100000 ,
+		      "contempt": 0.02000000,
+		      "disgust": 0.0004,
+		      "fear": 0.0001122817,
+		      "happiness": 0.000001080,
+		      "neutral": 0.9,
+		      "sadness": 0.000004,
+		      "surprise": 0.0877
+			},
+			"other": {
+				"age": 27.0,
+	      		"gender": "male",
+			    "headPose": {
+			        "roll": 1.9,
+			        "yaw": 20,
+			        "pitch": 0
+			    }
+			}
+		},
+		{
+			"name": "marvel_heroes/black_widow.png",
+			"emotions": {
+			      "anger": 0.1154285161,
+			      "contempt": 0.50122393388,
+			      "disgust": 0.10000758274655,
+			      "fear": 0.10004491894,
+			      "happiness": 0.1000121367621,
+			      "neutral": 0.9828806,
+			      "sadness": 0.100144268241,
+			      "surprise": 0.100258044834
+			},
+			"other": {
+	     		"age": 26.7,
+		      	"gender": "female",
+		      	"headPose": {
+			        "roll": -2,
+			        "yaw": 1,
+			        "pitch": 0
+			    }
+			}
+		},
+		{
+			"name": "marvel_heroes/hulk.png",
+			"emotions": {
+				"anger": 1.0,
+		      	"contempt": 0,
+		      	"disgust": 0,
+		      	"fear": 0.3,
+		      	"happiness": 0,
+			    "neutral": 0,
+			    "sadness": 0.5,
+				"surprise": 0
+			},
+			"other": {
+				"age": 35.0,
+			    "gender": "male",
+			    "headPose": {
+			        "roll": 0,
+			        "yaw": 0,
+			        "pitch": 0
+			    }
+			}
+		},
+		{
+			"name": "marvel_heroes/deadpool.png",
+			"emotions": {
+				"anger": 0.2,
+		      	"contempt": 0.0,
+		      	"disgust": 0.0,
+		      	"fear": 0.0,
+		      	"happiness": 0.7,
+			    "neutral": 0.0,
+			    "sadness": 0.0,
+				"surprise": 0.8
+			},
+			"other": {
+				"age": 25.1,
+			    "gender": "male",
+			    "headPose": {
+			        "roll": 0.0,
+			        "yaw": 0.0,
+			        "pitch": 0.0
+			    }
+			}
+		}
+	]	
+}
