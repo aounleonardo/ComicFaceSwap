@@ -1,7 +1,7 @@
 # ComicFaceSwap
 
-Android application.
-Swaps each face in a photo with face of marvel character who is most similar, based on facial emotions and other metrics.
+Android application, all branches other than master need Android API 21 or more, all functionalities work on Android 7.0.0 and higher.
+Swaps each face in a photo with face of comic character that is most similar, based on facial emotions and a few metrics.
 
 Uses Microsoft Cognitive Service's Face and Emotion API.
 
