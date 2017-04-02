@@ -92,6 +92,19 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void analyzeCaptured(View view){
+        Bundle extras = getIntent().getExtras();
+        byte[] capturedImage = extras.getByteArray("capturedImage");
+        if(capturedImage != null){
+            Bitmap bitmap = BitmapFactory.decodeByteArray(capturedImage, 0, capturedImage.length);
+
+            ImageView imageView = (ImageView) findViewById(R.id.imageView1);
+            imageView.setImageBitmap(bitmap);
+            detectAndFrame(bitmap);
+        }
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
