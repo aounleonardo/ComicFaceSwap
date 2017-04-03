@@ -79,13 +79,13 @@ public class CameraActivity extends AppCompatActivity {
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
 
-    private byte[] capturedImage;
     private Context thiss = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //characteristics.get(characteristics.LENS_FACING) = 0 for Front and 1 for back
         super.onCreate(savedInstanceState);
+        Log.d("Leo", "Camera onCreate");
         setContentView(R.layout.activity_camera);
         textureView = (TextureView) findViewById(R.id.textureView);
         assert textureView != null;
@@ -224,9 +224,10 @@ public class CameraActivity extends AppCompatActivity {
 
                 private void save(byte[] bytes) throws IOException {
                     int len = bytes.length;
-                    capturedImage = new byte[len];
+                    ImageAnalyser imageAnalyser = ImageAnalyser.getInstance();
+                    imageAnalyser.capturedImage = new byte[len];
                     for (int i = 0; i < len; i++) {
-                        capturedImage[i] = bytes[i];
+                        imageAnalyser.capturedImage[i] = bytes[i];
                     }
                 }
 
@@ -237,15 +238,15 @@ public class CameraActivity extends AppCompatActivity {
                 @Override
                 public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
-                    Toast.makeText(CameraActivity.this, "Saved: size is " + capturedImage.length, Toast.LENGTH_SHORT).show();
-                    if (capturedImage != null) {
+                    /*if (capturedImage != null) {
                         //Toast.makeText(CameraActivity.this, "heyoooo", Toast.LENGTH_SHORT).show();
                         closeCamera();
                         Intent intent = new Intent(thiss, MainActivity.class);
                         byte[] copy = capturedImage.clone();
                         intent.putExtra("capturedImage", copy);
                         startActivity(intent);
-                    }
+                    }*/
+                    finish();
                     //createCameraPreview();
                 }
             };
