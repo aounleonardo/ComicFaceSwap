@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             try{
             files = assetManager.list("");
 
-            InputStream input = assetManager.open("comicFaces.json");
+            InputStream input = assetManager.open("marvel_villains.json");
             JsonReader comicReader = new JsonReader(new InputStreamReader(input));
                 StringWriter writer = new StringWriter();
                 IOUtils.copy(input, writer, "UTF-8");
@@ -89,6 +89,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void takePic(View view){
         Intent intent = new Intent(this, CameraActivity.class);
+        startActivity(intent);
+    }
+
+    public void analyzeCaptured(View view){
+        Bundle extras = getIntent().getExtras();
+        byte[] capturedImage = extras.getByteArray("capturedImage");
+        if(capturedImage != null){
+            Bitmap bitmap = BitmapFactory.decodeByteArray(capturedImage, 0, capturedImage.length);
+
+            ImageView imageView = (ImageView) findViewById(R.id.imageView1);
+            imageView.setImageBitmap(bitmap);
+            detectAndFrame(bitmap);
+        }
+
+    }
+
+    public void gotoMultiverse(View view){
+        Intent intent = new Intent(this, UniversesActivity.class);
         startActivity(intent);
     }
 
