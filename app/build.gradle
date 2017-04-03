@@ -28,5 +28,6 @@ dependencies {
     compile 'com.android.support:design:24.2.1'
     compile 'com.microsoft.projectoxford:face:1.2.1'
     compile 'com.microsoft.projectoxford:emotion:1.0.0'
+    compile 'com.android.support.constraint:constraint-layout:+'
     testCompile 'junit:junit:4.12'
 }
