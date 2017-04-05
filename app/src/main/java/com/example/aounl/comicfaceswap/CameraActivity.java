@@ -85,7 +85,6 @@ public class CameraActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         //characteristics.get(characteristics.LENS_FACING) = 0 for Front and 1 for back
         super.onCreate(savedInstanceState);
-        Log.d("Leo", "Camera onCreate");
         setContentView(R.layout.activity_camera);
         textureView = (TextureView) findViewById(R.id.textureView);
         assert textureView != null;

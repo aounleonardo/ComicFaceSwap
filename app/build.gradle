@@ -5,7 +5,7 @@ android {
     buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.example.aounl.comicfaceswap"
-        minSdkVersion 21 //19 for HTC
+        minSdkVersion 21  /*18*/ //for HTC
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"

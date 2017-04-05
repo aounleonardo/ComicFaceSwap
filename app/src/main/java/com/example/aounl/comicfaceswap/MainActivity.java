@@ -20,13 +20,7 @@ import android.os.*;
 import android.graphics.*;
 import android.widget.*;
 import android.provider.*;
-
-import com.microsoft.projectoxford.emotion.EmotionServiceClient;
-import com.microsoft.projectoxford.emotion.EmotionServiceRestClient;
 import com.microsoft.projectoxford.emotion.contract.*;
-import com.microsoft.projectoxford.face.*;
-import com.microsoft.projectoxford.face.contract.*;
-import com.microsoft.projectoxford.face.contract.FaceRectangle;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
@@ -35,10 +29,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
     private ImageAnalyser imageAnalyser = ImageAnalyser.getInstance();
     private final int PICK_IMAGE = 1;
-    private static List<Bitmap> comic_faces = new ArrayList<>();
     public static AssetManager assetManager;
-    List<RecognizeResult> recos;
-    Bitmap bmp = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -122,23 +113,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Detect faces by uploading face images
-// Frame faces after detection
-
     private void detectAndFrame(final Bitmap imageBitmap){
         ImageView imageView = (ImageView)findViewById(R.id.imageView1);
         imageAnalyser.detectAndFrame(imageBitmap, imageView);
     }
-
-
-    private Bitmap overlay(Bitmap bmp1, Bitmap bmp2) {
-        Bitmap bmOverlay = Bitmap.createBitmap(bmp1.getWidth(), bmp1.getHeight(), bmp1.getConfig());
-        Canvas canvas = new Canvas(bmOverlay);
-        canvas.drawBitmap(bmp1, new Matrix(), null);
-        canvas.drawBitmap(bmp2, new Matrix(), null);
-        return bmOverlay;
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

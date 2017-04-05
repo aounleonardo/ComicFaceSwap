@@ -37,8 +37,8 @@ import java.util.Locale;
 
  class ImageAnalyser {
     private static ImageAnalyser instance;
-    FaceServiceClient faceServiceClient;
-    EmotionServiceClient emotionServiceClient;
+    private FaceServiceClient faceServiceClient;
+    private EmotionServiceClient emotionServiceClient;
     ProgressDialog detectionProgressDialog;
     private List<RecognizeResult> recos;
     JSONObject comicLib;
@@ -267,6 +267,15 @@ import java.util.Locale;
         matrix.postRotate(angle);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix,
                 true);
+    }
+
+
+    private Bitmap overlay(Bitmap bmp1, Bitmap bmp2) {
+        Bitmap bmOverlay = Bitmap.createBitmap(bmp1.getWidth(), bmp1.getHeight(), bmp1.getConfig());
+        Canvas canvas = new Canvas(bmOverlay);
+        canvas.drawBitmap(bmp1, new Matrix(), null);
+        canvas.drawBitmap(bmp2, new Matrix(), null);
+        return bmOverlay;
     }
 
 
