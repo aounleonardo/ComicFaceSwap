@@ -41,11 +41,8 @@ import java.util.Locale;
     private EmotionServiceClient emotionServiceClient;
     ProgressDialog detectionProgressDialog;
     private List<RecognizeResult> recos;
-    JSONObject comicLib;
-    JSONArray comicCharacters;
     byte[] capturedImage;
     Bitmap bitmap;
-    AssetManager assetManager;
 
     private ImageAnalyser(){
         faceServiceClient = new FaceServiceRestClient("0ca0c2e7070f4e85864dbc2ba18c8699");
@@ -57,7 +54,7 @@ import java.util.Locale;
         return instance;
     }
 
-    void detectAndFrame(final Bitmap imageBitmap, final ImageView imageView)
+    void detectAndFrame(final Bitmap imageBitmap, final ImageView imageView, final Librarian librarian)
     {
         recos = new ArrayList<>();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -148,14 +145,14 @@ import java.util.Locale;
                         //TODO: update face frames
                         detectionProgressDialog.dismiss();
                         if (result == null) return;
-                        imageView.setImageBitmap(drawFacesOnFaces(imageBitmap, result, recos));
+                        imageView.setImageBitmap(drawFacesOnFaces(imageBitmap, result, recos, librarian));
                         imageBitmap/*bmp*/.recycle();
                     }
                 };
         detectTask.execute(inputStream);
     }
 
-    private Bitmap drawFacesOnFaces(Bitmap originalBitmap, Face[] faces, List<RecognizeResult> recos){
+    private Bitmap drawFacesOnFaces(Bitmap originalBitmap, Face[] faces, List<RecognizeResult> recos, Librarian librarian){
         Bitmap bitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
         Canvas canvas = new Canvas(bitmap);
         int nbOfFaces = recos.size();
@@ -166,13 +163,13 @@ import java.util.Locale;
                 HeadPose headPose = attribute.headPose;
                 float roll = (float)(headPose.roll);
 
-                String imageName = findBestComicFace(faces[i], recos.get(i));
+                String imageName = findBestComicFace(faces[i], recos.get(i), librarian);
 
                 float faceWidth = faceRectangle.width;
                 float faceHeight = faceRectangle.height;
                 Bitmap originalComicFace = null;
                 try{
-                    originalComicFace = BitmapFactory.decodeStream(assetManager.open(imageName));
+                    originalComicFace = BitmapFactory.decodeStream(librarian.assetManager.open(imageName));
                 } catch (Exception e){
                     System.out.println(e.getMessage());
                 }
@@ -195,17 +192,17 @@ import java.util.Locale;
         return bitmap;
     }
 
-    private String findBestComicFace(Face face, RecognizeResult reco){
+    private String findBestComicFace(Face face, RecognizeResult reco, Librarian librarian){
         Scores scores = reco.scores;
         float age = (float)face.faceAttributes.age;
         String gender = face.faceAttributes.gender;
         String answer = "";
 
         try{
-            int nbCharacters = comicCharacters.length();
+            int nbCharacters = librarian.comicCharacters.length();
             float minCost = Float.MAX_VALUE;
             for(int i = 0; i < nbCharacters; i++){
-                JSONObject character = comicLib.getJSONArray("results").getJSONObject(i);
+                JSONObject character = librarian.comicLib.getJSONArray("results").getJSONObject(i);
                 float thisCost = getCost(scores, age, gender, character);
                 if(thisCost < minCost){
                     minCost = thisCost;

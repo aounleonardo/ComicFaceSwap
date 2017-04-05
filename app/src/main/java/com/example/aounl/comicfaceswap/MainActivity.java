@@ -27,33 +27,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
-    private ImageAnalyser imageAnalyser = ImageAnalyser.getInstance();
+    private ImageAnalyser imageAnalyser;
+    private Librarian librarian;
     private final int PICK_IMAGE = 1;
-    public static AssetManager assetManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         String[] files;
         imageAnalyser = ImageAnalyser.getInstance();
-        imageAnalyser.assetManager  = getAssets();
-        assetManager = imageAnalyser.assetManager;
-
-
-        try{
-            files = assetManager.list("");
-
-            InputStream input = assetManager.open("marvel_heroes.json");
-            JsonReader comicReader = new JsonReader(new InputStreamReader(input));
-                StringWriter writer = new StringWriter();
-                IOUtils.copy(input, writer, "UTF-8");
-                String theString = writer.toString();
-
-                imageAnalyser.comicLib = new JSONObject(theString);
-                imageAnalyser.comicCharacters = (JSONArray) imageAnalyser.comicLib.get("results");
-
-            } catch(Exception e){
-            }
-
+        librarian = Librarian.getInstance(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -115,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void detectAndFrame(final Bitmap imageBitmap){
         ImageView imageView = (ImageView)findViewById(R.id.imageView1);
-        imageAnalyser.detectAndFrame(imageBitmap, imageView);
+        imageAnalyser.detectAndFrame(imageBitmap, imageView, librarian);
     }
 
     @Override
