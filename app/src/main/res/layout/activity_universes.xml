@@ -8,6 +8,12 @@
     tools:context="com.example.aounl.comicfaceswap.UniversesActivity">
 
 
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        android:onClick="done"/>
 
     <ListView
         android:id="@+id/listView1"
@@ -15,5 +21,6 @@
         android:layout_height="wrap_content">
 
     </ListView>
+
 
 </LinearLayout>
