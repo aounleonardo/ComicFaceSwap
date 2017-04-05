@@ -29,41 +29,36 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Leonardo Aoun on 4/2/2017.
  */
 
-public class ImageAnalyser {
+ class ImageAnalyser {
     private static ImageAnalyser instance;
-    public static FaceServiceClient faceServiceClient;
-    public static EmotionServiceClient emotionServiceClient;
-    public static ProgressDialog detectionProgressDialog;
-    private static List<RecognizeResult> recos;
-    public static JSONObject comicLib;
-    public static JSONArray comicCharacters;
-    public static byte[] capturedImage;
-    public static Bitmap bitmap;
-    public static AssetManager assetManager;
+    FaceServiceClient faceServiceClient;
+    EmotionServiceClient emotionServiceClient;
+    ProgressDialog detectionProgressDialog;
+    private List<RecognizeResult> recos;
+    JSONObject comicLib;
+    JSONArray comicCharacters;
+    byte[] capturedImage;
+    Bitmap bitmap;
+    AssetManager assetManager;
 
     private ImageAnalyser(){
         faceServiceClient = new FaceServiceRestClient("0ca0c2e7070f4e85864dbc2ba18c8699");
         emotionServiceClient = new EmotionServiceRestClient("29361194922442848f54ab8ec5f65d08");
     }
 
-    public static ImageAnalyser getInstance(){
+    static ImageAnalyser getInstance(){
         if(instance == null){instance = new ImageAnalyser();}
         return instance;
     }
 
-
-    public static void detectAndFrame_dumb(final Bitmap imageBitmap){
-        bitmap = imageBitmap.copy(imageBitmap.getConfig(), true);
-    }
-
-    public static void detectAndFrame(final Bitmap imageBitmap)
+    void detectAndFrame(final Bitmap imageBitmap, final ImageView imageView)
     {
-        Log.w("Leo", "detectAndFrame");
         recos = new ArrayList<>();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         imageBitmap.compress(Bitmap.CompressFormat.PNG/*JPEG*/, 100, outputStream);
@@ -75,7 +70,6 @@ public class ImageAnalyser {
                 new AsyncTask<InputStream, String, Face[]>() {
                     @Override
                     protected Face[] doInBackground(InputStream... params) {
-                        Log.w("Leo", "doInBackground");
 
                         try {
                             FaceServiceClient.FaceAttributeType[] attributes = new FaceServiceClient.FaceAttributeType[]{
@@ -89,23 +83,6 @@ public class ImageAnalyser {
 
 
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-// Fake code simulating the copy
-// You can generally do better with nio if you need...
-// And please, unlike me, do something about the Exceptions :D
-                            // ----------------------
-
-                            //BufferedInputStream bufferedInputStream = new BufferedInputStream(params[0]);
-                            // /*Bitmap */bmp = BitmapFactory.decodeStream(bufferedInputStream);
-                            // bmp = Bitmap.createScaledBitmap(bmp, bmp.getWidth(), bmp.getHeight(), false);
-                            // System.out.println("bytecount of this bitmap" + bmp.getByteCount());
-                            //  ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                            //  bmp.compress(Bitmap.CompressFormat.JPEG/*PNG*/, 0 /*ignored for PNG*/, bos);
-                            //  byte[] bitmapdata = bos.toByteArray();
-                            // ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
-
-                            // ------------------------
-
 
                             byte[] buffer = new byte[1024];
                             int len;
@@ -131,8 +108,8 @@ public class ImageAnalyser {
                             );
                             is1.close();
 
-                            InputStream input = is2;
-                            recos = emotionServiceClient.recognizeImage(input);
+//                            InputStream input = is2;
+                            recos = emotionServiceClient.recognizeImage(is2);
                             is2.close();
                             for(RecognizeResult reco : recos){
                                 System.out.println(printScores(reco.scores));
@@ -171,34 +148,25 @@ public class ImageAnalyser {
                         //TODO: update face frames
                         detectionProgressDialog.dismiss();
                         if (result == null) return;
-//                        ImageView imageView = (ImageView)findViewById(R.id.imageView1);
-//                        imageView.setImageBitmap(drawFaceRectanglesOnBitmap(imageBitmap, result));
-//                        bitmap = imageBitmap.copy(imageBitmap.getConfig(), true);
-                        Bitmap temp = bitmap.copy(bitmap.getConfig(), true);
-                        bitmap = drawFacesOnFaces(imageBitmap, result, recos);
-                        //bitmap = temp.copy(temp.getConfig(), true);
+                        imageView.setImageBitmap(drawFacesOnFaces(imageBitmap, result, recos));
                         imageBitmap/*bmp*/.recycle();
                     }
                 };
         detectTask.execute(inputStream);
     }
 
-    private static Bitmap drawFacesOnFaces(Bitmap originalBitmap, Face[] faces, List<RecognizeResult> recos){
-        Log.w("Leo", "drawFacesOnFaces");
+    private Bitmap drawFacesOnFaces(Bitmap originalBitmap, Face[] faces, List<RecognizeResult> recos){
         Bitmap bitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
         Canvas canvas = new Canvas(bitmap);
         int nbOfFaces = recos.size();
         if(nbOfFaces > 0){
             for(int i = 0; i< nbOfFaces; i++){
-                Log.w("Leo", "new face");
                 FaceRectangle faceRectangle = faces[i].faceRectangle;
                 FaceAttribute attribute = faces[i].faceAttributes;
                 HeadPose headPose = attribute.headPose;
                 float roll = (float)(headPose.roll);
 
                 String imageName = findBestComicFace(faces[i], recos.get(i));
-                Log.w("Leo", "image name is " + imageName);
-
 
                 float faceWidth = faceRectangle.width;
                 float faceHeight = faceRectangle.height;
@@ -227,19 +195,14 @@ public class ImageAnalyser {
         return bitmap;
     }
 
-    private static String findBestComicFace(Face face, RecognizeResult reco){
-        Log.w("Leo", "findBestComicFace");
+    private String findBestComicFace(Face face, RecognizeResult reco){
         Scores scores = reco.scores;
         float age = (float)face.faceAttributes.age;
         String gender = face.faceAttributes.gender;
         String answer = "";
 
         try{
-            Log.w("Leo", "inside try, comic lib is null? " + (comicLib == null));
-            Log.w("Leo", "comicCharacters length is " + comicCharacters.length());
             int nbCharacters = comicCharacters.length();
-            Log.w("Leo", "after getJSONArray");
-            Log.w("Leo", "nbCharacters is " + nbCharacters);
             float minCost = Float.MAX_VALUE;
             for(int i = 0; i < nbCharacters; i++){
                 JSONObject character = comicLib.getJSONArray("results").getJSONObject(i);
@@ -257,7 +220,7 @@ public class ImageAnalyser {
         return answer;
     }
 
-    private static float getCost(Scores emotions, float age, String gender, JSONObject comicChar){
+    private float getCost(Scores emotions, float age, String gender, JSONObject comicChar){
         float cost = 0.0f;
 
         try{
@@ -285,7 +248,7 @@ public class ImageAnalyser {
         return cost;
     }
 
-    private static String printScores(Scores scores){
+    private String printScores(Scores scores){
         return "---------------------------- \n"
                 + "anger: " + scores.anger + " \n"
                 + "contempt: " + scores.contempt + " \n"
@@ -296,6 +259,14 @@ public class ImageAnalyser {
                 + "sadness: " + scores.sadness + " \n"
                 + "surprise: " + scores.surprise + " \n"
                 + "---------------------------- \n";
+    }
+
+
+    private Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix,
+                true);
     }
 
 

@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         imageAnalyser = ImageAnalyser.getInstance();
         imageAnalyser.assetManager  = getAssets();
         assetManager = imageAnalyser.assetManager;
-        Log.w("Leo", "onCreate");
 
 
         try{
@@ -60,21 +59,10 @@ public class MainActivity extends AppCompatActivity {
 
                 imageAnalyser.comicLib = new JSONObject(theString);
                 imageAnalyser.comicCharacters = (JSONArray) imageAnalyser.comicLib.get("results");
-                Log.w("Leo", "characters length is " + imageAnalyser.comicCharacters.length());
-//                System.out.println(((JSONArray) comicLib.get("results")).getJSONObject(0).getJSONObject("emotions").getClass());
 
             } catch(Exception e){
             }
 
-
-
-//            for(String f : files){
-//                if(f.endsWith(".png")){
-//                    InputStream input = assetManager.open(f);
-//                    Bitmap bmp = BitmapFactory.decodeStream(input);
-//                    comic_faces.add(bmp);
-//                }
-//            }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -122,47 +110,12 @@ public class MainActivity extends AppCompatActivity {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
-                /*ExifInterface ei = new ExifInterface(uri.getPath());
-                int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                        ExifInterface.ORIENTATION_UNDEFINED);
-
-                switch(orientation) {
-                    case ExifInterface.ORIENTATION_ROTATE_90:
-                        bitmap = rotateImage(bitmap, 90);
-                        break;
-                    case ExifInterface.ORIENTATION_ROTATE_180:
-                        bitmap = rotateImage(bitmap, 180);
-                        break;
-                    case ExifInterface.ORIENTATION_ROTATE_270:
-                        bitmap = rotateImage(bitmap, 270);
-                        break;
-                    case ExifInterface.ORIENTATION_NORMAL:
-                    default:
-                        break;
-                }*/
-
-
-
-                //bitmap = rotateImage(bitmap, 270);
-
-                /*if(bitmap.getHeight() > 4096 || bitmap.getWidth() > 4096){
-                    int large = Math.max(bitmap.getHeight(), bitmap.getWidth());
-                    float shrinkFactor = large/4096*1.f;
-                    bitmap = Bitmap.createScaledBitmap(bitmap, (int)(bitmap.getWidth()/shrinkFactor),
-                            (int)(bitmap.getHeight()/shrinkFactor), false);
-                }*/
-
-
-
                 ImageView imageView = (ImageView) findViewById(R.id.imageView1);
                 imageView.setImageBitmap(bitmap);
 
                 detectAndFrame(bitmap);
 
-
-
-
-}
+            }
                 catch (IOException e) {
                 e.printStackTrace();
             }
@@ -173,10 +126,8 @@ public class MainActivity extends AppCompatActivity {
 // Frame faces after detection
 
     private void detectAndFrame(final Bitmap imageBitmap){
-        imageAnalyser.detectAndFrame(imageBitmap);
         ImageView imageView = (ImageView)findViewById(R.id.imageView1);
-        imageView.setImageBitmap(imageAnalyser.bitmap);
-//        imageView.setImageBitmap(imageBitmap);
+        imageAnalyser.detectAndFrame(imageBitmap, imageView);
     }
 
 
@@ -188,31 +139,6 @@ public class MainActivity extends AppCompatActivity {
         return bmOverlay;
     }
 
-
-
-
-    private static Bitmap drawFaceRectanglesOnBitmap(Bitmap originalBitmap, Face[] faces) {
-        Bitmap bitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
-        Canvas canvas = new Canvas(bitmap);
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.RED);
-        int stokeWidth = 2;
-        paint.setStrokeWidth(stokeWidth);
-        if (faces != null) {
-            for (Face face : faces) {
-                FaceRectangle faceRectangle = face.faceRectangle;
-                canvas.drawRect(
-                        faceRectangle.left,
-                        faceRectangle.top,
-                        faceRectangle.left + faceRectangle.width,
-                        faceRectangle.top + faceRectangle.height,
-                        paint);
-            }
-        }
-        return bitmap;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -237,11 +163,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public static Bitmap rotateImage(Bitmap source, float angle) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix,
-                true);
-    }
 
 }
