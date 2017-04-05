@@ -21,7 +21,6 @@ import com.microsoft.projectoxford.face.contract.FaceAttribute;
 import com.microsoft.projectoxford.face.contract.FaceRectangle;
 import com.microsoft.projectoxford.face.contract.HeadPose;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
@@ -29,7 +28,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Leonardo Aoun on 4/2/2017.
@@ -211,7 +209,6 @@ import java.util.Locale;
             }
 
         } catch (Exception e){
-            Log.w("Leo", "ERROR: " + e.getMessage());
             System.out.println(e.getMessage());
         }
         return answer;

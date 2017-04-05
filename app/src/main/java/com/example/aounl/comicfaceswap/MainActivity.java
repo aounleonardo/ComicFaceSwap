@@ -1,18 +1,13 @@
 package com.example.aounl.comicfaceswap;
 
-import android.content.res.AssetManager;
-import android.media.Image;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.*;
 import android.content.*;
 import android.net.*;
@@ -21,10 +16,6 @@ import android.graphics.*;
 import android.widget.*;
 import android.provider.*;
 import com.microsoft.projectoxford.emotion.contract.*;
-
-import org.apache.commons.io.IOUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     private ImageAnalyser imageAnalyser;
