@@ -21,7 +21,6 @@ import com.microsoft.projectoxford.face.contract.FaceAttribute;
 import com.microsoft.projectoxford.face.contract.FaceRectangle;
 import com.microsoft.projectoxford.face.contract.HeadPose;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
@@ -29,7 +28,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Leonardo Aoun on 4/2/2017.
@@ -41,11 +39,8 @@ import java.util.Locale;
     private EmotionServiceClient emotionServiceClient;
     ProgressDialog detectionProgressDialog;
     private List<RecognizeResult> recos;
-    JSONObject comicLib;
-    JSONArray comicCharacters;
     byte[] capturedImage;
     Bitmap bitmap;
-    AssetManager assetManager;
 
     private ImageAnalyser(){
         faceServiceClient = new FaceServiceRestClient("0ca0c2e7070f4e85864dbc2ba18c8699");
@@ -57,7 +52,7 @@ import java.util.Locale;
         return instance;
     }
 
-    void detectAndFrame(final Bitmap imageBitmap, final ImageView imageView)
+    void detectAndFrame(final Bitmap imageBitmap, final ImageView imageView, final Librarian librarian)
     {
         recos = new ArrayList<>();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -148,14 +143,14 @@ import java.util.Locale;
                         //TODO: update face frames
                         detectionProgressDialog.dismiss();
                         if (result == null) return;
-                        imageView.setImageBitmap(drawFacesOnFaces(imageBitmap, result, recos));
+                        imageView.setImageBitmap(drawFacesOnFaces(imageBitmap, result, recos, librarian));
                         imageBitmap/*bmp*/.recycle();
                     }
                 };
         detectTask.execute(inputStream);
     }
 
-    private Bitmap drawFacesOnFaces(Bitmap originalBitmap, Face[] faces, List<RecognizeResult> recos){
+    private Bitmap drawFacesOnFaces(Bitmap originalBitmap, Face[] faces, List<RecognizeResult> recos, Librarian librarian){
         Bitmap bitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
         Canvas canvas = new Canvas(bitmap);
         int nbOfFaces = recos.size();
@@ -166,20 +161,20 @@ import java.util.Locale;
                 HeadPose headPose = attribute.headPose;
                 float roll = (float)(headPose.roll);
 
-                String imageName = findBestComicFace(faces[i], recos.get(i));
+                String imageName = findBestComicFace(faces[i], recos.get(i), librarian);
 
                 float faceWidth = faceRectangle.width;
                 float faceHeight = faceRectangle.height;
                 Bitmap originalComicFace = null;
                 try{
-                    originalComicFace = BitmapFactory.decodeStream(assetManager.open(imageName));
+                    originalComicFace = BitmapFactory.decodeStream(librarian.assetManager.open(imageName));
                 } catch (Exception e){
                     System.out.println(e.getMessage());
                 }
                 float originalComicFaceWidth = originalComicFace.getWidth();
                 float originalComicFaceHeight = originalComicFace.getHeight();
                 float widthFactor = faceWidth/originalComicFaceWidth;
-                float comicFaceMult = 1.75f;
+                float comicFaceMult = 1.25f;
                 int comicWidth = (int)(originalComicFaceWidth*comicFaceMult*widthFactor);
                 int comicHeight = (int)(originalComicFaceHeight*comicFaceMult*widthFactor);
                 Bitmap comicFace = Bitmap.createScaledBitmap(originalComicFace, comicWidth, comicHeight, false);
@@ -195,58 +190,29 @@ import java.util.Locale;
         return bitmap;
     }
 
-    private String findBestComicFace(Face face, RecognizeResult reco){
+    private String findBestComicFace(Face face, RecognizeResult reco, Librarian librarian){
         Scores scores = reco.scores;
         float age = (float)face.faceAttributes.age;
         String gender = face.faceAttributes.gender;
         String answer = "";
 
         try{
-            int nbCharacters = comicCharacters.length();
-            float minCost = Float.MAX_VALUE;
+            int nbCharacters = librarian.nbCharacters();
+            double minCost = Float.MAX_VALUE;
             for(int i = 0; i < nbCharacters; i++){
-                JSONObject character = comicLib.getJSONArray("results").getJSONObject(i);
-                float thisCost = getCost(scores, age, gender, character);
+                double thisCost = librarian.getCost(scores, age, gender, i);
                 if(thisCost < minCost){
                     minCost = thisCost;
-                    answer = character.getString("name");
+                    answer = librarian.characterName(i);
                 }
             }
 
         } catch (Exception e){
-            Log.w("Leo", "ERROR: " + e.getMessage());
             System.out.println(e.getMessage());
         }
         return answer;
     }
 
-    private float getCost(Scores emotions, float age, String gender, JSONObject comicChar){
-        float cost = 0.0f;
-
-        try{
-            if(!gender.equals(comicChar.getJSONObject("other").get("gender"))){
-                cost = 100.f;
-            } else{
-
-                cost += Math.pow(Math.abs(emotions.anger - (double)comicChar.getJSONObject("emotions").get("anger") *1.0), 2);
-                cost += Math.pow(Math.abs(emotions.contempt - (double)comicChar.getJSONObject("emotions").get("contempt")*1.0), 2);
-                cost += Math.pow(Math.abs(emotions.disgust - (double)comicChar.getJSONObject("emotions").get("disgust")*1.0), 2);
-                cost += Math.pow(Math.abs(emotions.fear - (double)comicChar.getJSONObject("emotions").get("fear")*1.0), 2);
-                cost += Math.pow(Math.abs(emotions.happiness - (double)comicChar.getJSONObject("emotions").get("happiness")*1.0), 2);
-                cost += Math.pow(Math.abs(emotions.neutral - (double)comicChar.getJSONObject("emotions").get("neutral")*1.0), 2);
-                cost += Math.pow(Math.abs(emotions.sadness - (double)comicChar.getJSONObject("emotions").get("sadness")*1.0), 2);
-                cost += Math.pow(Math.abs(emotions.surprise - (double)comicChar.getJSONObject("emotions").get("surprise")*1.0), 2);
-
-                cost += Math.pow(Math.abs(age - (double)comicChar.getJSONObject("other").get("age"))/50.f, 2);
-            }
-        }catch(Exception e){
-            System.out.println("qwertyuio" + e.getMessage());
-        }
-        try{
-            System.out.println(comicChar.getString("name") + "  costs   " + cost);
-        } catch (Exception e){}
-        return cost;
-    }
 
     private String printScores(Scores scores){
         return "---------------------------- \n"
