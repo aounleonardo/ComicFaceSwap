@@ -1,5 +1,7 @@
 package com.example.aounl.comicfaceswap;
 
+import android.widget.ImageView;
+
 /**
  * Created by Leonardo Aoun on 4/5/2017.
  */

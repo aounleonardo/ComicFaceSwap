@@ -3,13 +3,13 @@
     [
         {
             "name": "Heroes of Marvel",
-            "icon": "universes/marvel_heroes.png"
-            "json": "marvel_heroes.json",
+            "icon": "universes/marvel_heroes.png",
+            "json": "marvel_heroes.json"
         },
         {
             "name": "Villains of Marvel",
-            "icon": "universes/marvel_villains.png"
-            "json": "marvel_villains.json",
+            "icon": "universes/marvel_villains.png",
+            "json": "marvel_villains.json"
         }
     ]
 }
