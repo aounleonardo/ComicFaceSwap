@@ -15,6 +15,7 @@ import android.widget.TextView;
  */
 
 public class CustomAdapter extends ArrayAdapter<Model> {
+    public final static int CHECKBOX_POS = 0;
     Model[] modelItems = null;
     Context context;
 

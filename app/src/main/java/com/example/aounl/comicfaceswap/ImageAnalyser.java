@@ -174,7 +174,7 @@ import java.util.List;
                 float originalComicFaceWidth = originalComicFace.getWidth();
                 float originalComicFaceHeight = originalComicFace.getHeight();
                 float widthFactor = faceWidth/originalComicFaceWidth;
-                float comicFaceMult = 1.75f;
+                float comicFaceMult = 1.25f;
                 int comicWidth = (int)(originalComicFaceWidth*comicFaceMult*widthFactor);
                 int comicHeight = (int)(originalComicFaceHeight*comicFaceMult*widthFactor);
                 Bitmap comicFace = Bitmap.createScaledBitmap(originalComicFace, comicWidth, comicHeight, false);
@@ -197,14 +197,13 @@ import java.util.List;
         String answer = "";
 
         try{
-            int nbCharacters = librarian.comicCharacters.length();
-            float minCost = Float.MAX_VALUE;
+            int nbCharacters = librarian.nbCharacters();
+            double minCost = Float.MAX_VALUE;
             for(int i = 0; i < nbCharacters; i++){
-                JSONObject character = librarian.comicLib.getJSONArray("results").getJSONObject(i);
-                float thisCost = getCost(scores, age, gender, character);
+                double thisCost = librarian.getCost(scores, age, gender, i);
                 if(thisCost < minCost){
                     minCost = thisCost;
-                    answer = character.getString("name");
+                    answer = librarian.characterName(i);
                 }
             }
 
@@ -214,33 +213,6 @@ import java.util.List;
         return answer;
     }
 
-    private float getCost(Scores emotions, float age, String gender, JSONObject comicChar){
-        float cost = 0.0f;
-
-        try{
-            if(!gender.equals(comicChar.getJSONObject("other").get("gender"))){
-                cost = 100.f;
-            } else{
-
-                cost += Math.pow(Math.abs(emotions.anger - (double)comicChar.getJSONObject("emotions").get("anger") *1.0), 2);
-                cost += Math.pow(Math.abs(emotions.contempt - (double)comicChar.getJSONObject("emotions").get("contempt")*1.0), 2);
-                cost += Math.pow(Math.abs(emotions.disgust - (double)comicChar.getJSONObject("emotions").get("disgust")*1.0), 2);
-                cost += Math.pow(Math.abs(emotions.fear - (double)comicChar.getJSONObject("emotions").get("fear")*1.0), 2);
-                cost += Math.pow(Math.abs(emotions.happiness - (double)comicChar.getJSONObject("emotions").get("happiness")*1.0), 2);
-                cost += Math.pow(Math.abs(emotions.neutral - (double)comicChar.getJSONObject("emotions").get("neutral")*1.0), 2);
-                cost += Math.pow(Math.abs(emotions.sadness - (double)comicChar.getJSONObject("emotions").get("sadness")*1.0), 2);
-                cost += Math.pow(Math.abs(emotions.surprise - (double)comicChar.getJSONObject("emotions").get("surprise")*1.0), 2);
-
-                cost += Math.pow(Math.abs(age - (double)comicChar.getJSONObject("other").get("age"))/50.f, 2);
-            }
-        }catch(Exception e){
-            System.out.println("qwertyuio" + e.getMessage());
-        }
-        try{
-            System.out.println(comicChar.getString("name") + "  costs   " + cost);
-        } catch (Exception e){}
-        return cost;
-    }
 
     private String printScores(Scores scores){
         return "---------------------------- \n"

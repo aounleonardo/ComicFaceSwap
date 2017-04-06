@@ -5,6 +5,8 @@ import android.content.res.AssetManager;
 import android.util.JsonReader;
 import android.util.Log;
 
+import com.microsoft.projectoxford.emotion.contract.Scores;
+
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,16 +25,15 @@ class Librarian {
 
     private static Librarian instance;
     AssetManager assetManager;
-    String[] files;
-    JSONObject comicLib;
-    JSONArray comicCharacters;
-    JSONObject universesLib;
-    private int multiverseSize;
+
+    private String[] files;
     private int nbSelectedUniverses;
     private Universe[] universes;
-    private Activity creator; //might not need it
+    private boolean[] checks;
+    private List<Character> characters;
+    //private Activity creator; //might not need it
 
-    public static class Universe{
+    static class Universe{
         final String name;
         final String icon;
         final String json;
@@ -45,24 +46,25 @@ class Librarian {
 
     }
 
-    private Librarian(Activity activity){
-        creator = activity;
-        assetManager = activity.getAssets();
-        multiverseSize = 0;
 
+    private Librarian(Activity activity){
+        //creator = activity;
+        assetManager = activity.getAssets();
+        characters = new ArrayList<>();
         try{
             files = assetManager.list("");
 
             InputStream input = assetManager.open("universes.json");
-            JsonReader reader = new JsonReader(new InputStreamReader(input));
+            //JsonReader reader = new JsonReader(new InputStreamReader(input));
             StringWriter writer = new StringWriter();
             IOUtils.copy(input, writer, "UTF-8");
             String theString = writer.toString();
 
-            universesLib = new JSONObject(theString);
+            JSONObject universesLib = new JSONObject(theString);
             JSONArray universesJSON = (JSONArray) universesLib.get("results");
-            multiverseSize = universesJSON.length();
+            int multiverseSize = universesJSON.length();
             universes = new Universe[multiverseSize];
+            checks = new boolean[multiverseSize];
             for(int i = 0; i < multiverseSize; i++){
                 JSONObject universe = universesJSON.getJSONObject(i);
                 universes[i] = new Universe(universe.getString("name"),
@@ -72,6 +74,68 @@ class Librarian {
         } catch (Exception e){
             Log.w("Leo", "Librarian", e);
         }
+    }
+
+    void updateLibrary(boolean[] checks){
+        characters = new ArrayList<>();
+        nbSelectedUniverses = 0;
+        int len = checks.length;
+        for(int i = 0; i < len; i++){
+            this.checks[i] = checks[i];
+            if(checks[i]){
+                nbSelectedUniverses++;
+                addUniverse(i);
+            }
+
+        }
+    }
+
+    private void addUniverse(int i){
+        Universe u = universes[i];
+        try{
+            InputStream input = assetManager.open(u.json);
+            StringWriter writer = new StringWriter();
+            IOUtils.copy(input, writer, "UTF-8");
+            String theString = writer.toString();
+
+            JSONObject comicUniverse = new JSONObject(theString);
+            JSONArray comicCharacters = (JSONArray) comicUniverse.get("results");
+
+            int len = comicCharacters.length();
+            for(int c = 0; c < len; c++){
+                JSONObject character = comicCharacters.getJSONObject(c);
+                characters.add(new Character(character));
+            }
+
+        } catch(Exception e){
+            Log.w("Leo", "Exception in addUniverse " + e.getMessage());
+        }
+    }
+
+
+    double getCost(Scores emotions, float age, String gender, int comicChar){
+        double cost = 0.0f;
+        Character character = characters.get(comicChar);
+        try{
+            if(!gender.equals(character.gender)){
+                cost = 100.f;
+            } else{
+
+                cost += Math.pow(Math.abs(emotions.anger - character.anger), 2);
+                cost += Math.pow(Math.abs(emotions.contempt - character.contempt), 2);
+                cost += Math.pow(Math.abs(emotions.disgust - character.disgust), 2);
+                cost += Math.pow(Math.abs(emotions.fear - character.fear), 2);
+                cost += Math.pow(Math.abs(emotions.happiness - character.happiness), 2);
+                cost += Math.pow(Math.abs(emotions.neutral - character.neutral), 2);
+                cost += Math.pow(Math.abs(emotions.sadness - character.sadness), 2);
+                cost += Math.pow(Math.abs(emotions.surprise - character.surprise), 2);
+
+                cost += Math.pow(Math.abs(age - character.age)/50.f, 2);
+            }
+        }catch(Exception e){
+            Log.w("Leo", "Exception in getCost " + e.getMessage());
+        }
+        return cost;
     }
 
     static Librarian getInstance() throws IllegalStateException{
@@ -84,16 +148,29 @@ class Librarian {
         return instance;
     }
 
-    public int multiverseSize(){
-        return multiverseSize;
+    int multiverseSize(){
+        return universes.length;
     }
 
-    public int nbSelectedUniverses(){
+    int nbSelectedUniverses(){
         return nbSelectedUniverses;
     }
 
-    public Universe universe(int i){
+    int nbCharacters(){
+        return characters.size();
+    }
+
+    Universe universe(int i){
         return universes[i];
+    }
+
+//    Assumes i is valid
+    String characterName(int i){
+        return characters.get(i).name;
+    }
+
+    Boolean isChecked(int i){
+        return checks[i];
     }
 
 

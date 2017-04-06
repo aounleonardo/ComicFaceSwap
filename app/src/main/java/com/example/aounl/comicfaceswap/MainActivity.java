@@ -87,8 +87,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void detectAndFrame(final Bitmap imageBitmap){
-        ImageView imageView = (ImageView)findViewById(R.id.imageView1);
-        imageAnalyser.detectAndFrame(imageBitmap, imageView, librarian);
+        if(librarian.nbSelectedUniverses() > 0){
+            ImageView imageView = (ImageView)findViewById(R.id.imageView1);
+            imageAnalyser.detectAndFrame(imageBitmap, imageView, librarian);
+        }
     }
 
     @Override
